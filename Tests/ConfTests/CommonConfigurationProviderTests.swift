@@ -87,7 +87,7 @@ final class CommonConfigurationProviderTests: XCTestCase {
         XCTAssertEqual(configuration, expect)
     }
 
-    func testNestedValues() throws {
+    func testDecodeNestedValues() throws {
         let fetcher: CommonConfigurationProvider.Fetcher = { Data() }
         let parser: CommonConfigurationProvider.Parser = { _ in
             return [
@@ -105,5 +105,21 @@ final class CommonConfigurationProviderTests: XCTestCase {
             Key(["one", "more", "deep"]): "value"
         ]
         XCTAssertEqual(configuration, expect)
+    }
+
+    func testDecodeEmptyValues() throws {
+        let fetcher: CommonConfigurationProvider.Fetcher = { Data() }
+        let parser: CommonConfigurationProvider.Parser = { _ in [:] }
+        let provider = CommonConfigurationProvider(loader: fetcher, parser: parser)
+        let configuration = try provider.configuration()
+        XCTAssertEqual(configuration, [:])
+    }
+
+    func testDecodeEmptyArray() throws {
+        let fetcher: CommonConfigurationProvider.Fetcher = { Data() }
+        let parser: CommonConfigurationProvider.Parser = { _ in [ "key": []] }
+        let provider = CommonConfigurationProvider(loader: fetcher, parser: parser)
+        let configuration = try provider.configuration()
+        XCTAssertEqual(configuration, [:])
     }
 }

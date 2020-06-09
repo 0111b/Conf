@@ -1,7 +1,9 @@
 import Foundation
 
 /// Namespace for the predefined parsers
-enum Parser {
+enum Parser { }
+
+extension Parser {
     static let json: CommonConfigurationProvider.Parser = { data in
         let object: Any
         do {
@@ -14,5 +16,17 @@ enum Parser {
             throw ConfigurationError.parse(InvalidJsonFormat(data: data))
         }
         return values
+    }
+}
+
+extension Parser {
+    static let donEnv: CommonConfigurationProvider.Parser = { data in
+        func fail() throws {
+            struct InvalidDotEnvFormat: Error { let data: Data }
+            throw InvalidDotEnvFormat(data: data)
+        }
+        try fail()
+        let result = [String: String]()
+        return result
     }
 }
