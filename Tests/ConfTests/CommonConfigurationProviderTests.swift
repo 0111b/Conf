@@ -17,7 +17,7 @@ final class CommonConfigurationProviderTests: XCTestCase {
     }
 
     func testParserError() {
-        let fetcher: CommonConfigurationProvider.Fetcher = { return "" }
+        let fetcher: CommonConfigurationProvider.Fetcher = { Data() }
         let parser: CommonConfigurationProvider.Parser = { _ in throw  TestError() }
         let provider = CommonConfigurationProvider(loader: fetcher, parser: parser)
 
@@ -31,7 +31,7 @@ final class CommonConfigurationProviderTests: XCTestCase {
     }
 
     func testDecodeError() {
-        let fetcher: CommonConfigurationProvider.Fetcher = { return "" }
+        let fetcher: CommonConfigurationProvider.Fetcher = { Data() }
         let uuid = UUID()
         let parser: CommonConfigurationProvider.Parser = { data in
             return [
@@ -52,9 +52,10 @@ final class CommonConfigurationProviderTests: XCTestCase {
     }
 
     func testDataFlow() throws {
-        let fetcher: CommonConfigurationProvider.Fetcher = { return "string" }
-        let parser: CommonConfigurationProvider.Parser = { data in
-            XCTAssertEqual(data, "string")
+        let data = "string".data(using: .utf8)!
+        let fetcher: CommonConfigurationProvider.Fetcher = { data }
+        let parser: CommonConfigurationProvider.Parser = { parserInput in
+            XCTAssertEqual(parserInput, data)
             return [:]
         }
         let provider = CommonConfigurationProvider(loader: fetcher, parser: parser)
@@ -63,7 +64,7 @@ final class CommonConfigurationProviderTests: XCTestCase {
     }
 
     func testDecodeValues() throws {
-        let fetcher: CommonConfigurationProvider.Fetcher = {"" }
+        let fetcher: CommonConfigurationProvider.Fetcher = { Data() }
         let parser: CommonConfigurationProvider.Parser = { _ in
             return [ "key": 22]
         }
@@ -73,7 +74,7 @@ final class CommonConfigurationProviderTests: XCTestCase {
     }
 
     func testDecodeArray() throws {
-        let fetcher: CommonConfigurationProvider.Fetcher = {"" }
+        let fetcher: CommonConfigurationProvider.Fetcher = { Data() }
         let parser: CommonConfigurationProvider.Parser = { _ in
             return [ "key": ["one", "two"]]
         }
@@ -87,7 +88,7 @@ final class CommonConfigurationProviderTests: XCTestCase {
     }
 
     func testNestedValues() throws {
-        let fetcher: CommonConfigurationProvider.Fetcher = {"" }
+        let fetcher: CommonConfigurationProvider.Fetcher = { Data() }
         let parser: CommonConfigurationProvider.Parser = { _ in
             return [
                 "key": [ "nested": "value" ],

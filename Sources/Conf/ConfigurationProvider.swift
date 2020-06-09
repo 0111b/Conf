@@ -1,10 +1,12 @@
+import Foundation
+
 protocol ConfigurationProvider {
     func configuration() throws -> [Key: String]
 }
 
 final class CommonConfigurationProvider: ConfigurationProvider {
-    typealias Fetcher = () throws -> String
-    typealias Parser = (String) throws -> [String: Any]
+    typealias Fetcher = () throws -> Data
+    typealias Parser = (Data) throws -> [String: Any]
 
     init(loader: @escaping Fetcher, parser: @escaping Parser) {
         self.load = loader
@@ -15,7 +17,7 @@ final class CommonConfigurationProvider: ConfigurationProvider {
     let parse: Parser
 
     func configuration() throws -> [Key: String] {
-        let rawData: String
+        let rawData: Data
         let parsedData: [String: Any]
         do {
             try rawData = load()
