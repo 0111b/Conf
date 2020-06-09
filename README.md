@@ -1,4 +1,4 @@
-# cli-template
-[![Build Status](http://ci.merlin.local/api/badges/Templates/cli-template/status.svg)](http://ci.merlin.local/Templates/cli-template)
+# Conf
+[![Build Status](http://ci.merlin.local/api/badges/adan/Conf/status.svg)](http://ci.merlin.local/adan/Conf)
 
-Base template for cli project
+Config made easy
