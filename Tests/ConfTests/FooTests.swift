@@ -4,6 +4,6 @@ import XCTest
 final class FooTests: XCTestCase {
 
     func testFoo() throws {
-        
+
     }
 }
