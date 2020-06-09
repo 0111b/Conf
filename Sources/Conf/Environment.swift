@@ -1,5 +1,6 @@
 import Foundation
 
+/// Manages environment variables
 @dynamicMemberLookup
 public struct Environment {
     public init(info: ProcessInfo = .processInfo) {

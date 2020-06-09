@@ -3,9 +3,18 @@ import XCTest
 
 final class EnvironmentTests: XCTestCase {
 
+    static let sampleValues: [String: String] = [
+        "first": "string",
+        "integer": "1",
+        "float": "2.33",
+        "booleanTrue": "true",
+        "booleanFalse": "false",
+        "YES": "YES"
+    ]
+
     func testDump() throws {
-        let values = MockProcessInfo.sampleEnv
-        let info = MockProcessInfo(values)
+        let values = Self.sampleValues
+        let info = ProcessInfo.make(with: values)
         let env = Environment(info: info)
 
         let dumped = env.dump()
@@ -14,8 +23,7 @@ final class EnvironmentTests: XCTestCase {
     }
 
     func testRead() throws {
-        let values = MockProcessInfo.sampleEnv
-        let info = MockProcessInfo(values)
+        let info = ProcessInfo.make(with: Self.sampleValues)
         let env = Environment(info: info)
 
         XCTAssertNil(env.blabla)
@@ -59,7 +67,7 @@ final class EnvironmentTests: XCTestCase {
     }
 
     func testAdd() {
-        let env = Environment(info: ProcessInfo())
+        let env = Environment(info: ProcessInfo.instance)
 
         XCTAssertNil(env.key1)
         env.key1 = "value1"
@@ -71,7 +79,7 @@ final class EnvironmentTests: XCTestCase {
     }
 
     func testRemove() {
-        let env = Environment(info: ProcessInfo())
+        let env = Environment(info: ProcessInfo.instance)
         env.key1 = "value1"
 
         XCTAssertEqual(env.key1, "value1")
@@ -85,7 +93,7 @@ final class EnvironmentTests: XCTestCase {
     }
 
     func testUpdate() {
-        let env = Environment(info: ProcessInfo())
+        let env = Environment(info: ProcessInfo.instance)
         env.key1 = "value"
 
         XCTAssertEqual(env.key1, "value")
@@ -94,7 +102,7 @@ final class EnvironmentTests: XCTestCase {
     }
 
     func testWrite() {
-        let env = Environment(info: ProcessInfo())
+        let env = Environment(info: ProcessInfo.instance)
 
         let int = Int.random(in: Int.min...Int.max)
         env.int = int
@@ -109,21 +117,5 @@ final class EnvironmentTests: XCTestCase {
 
         env.failure = false
         XCTAssertEqual(env.failure, false)
-
     }
-}
-
-class MockProcessInfo: ProcessInfo {
-    init(_ env: [String: String]) { self.env = env }
-    var env: [String: String]
-    override var environment: [String: String] { env }
-
-    static let sampleEnv: [String: String] = [
-        "first": "string",
-        "integer": "1",
-        "float": "2.33",
-        "booleanTrue": "true",
-        "booleanFalse": "false",
-        "YES": "YES"
-    ]
 }
