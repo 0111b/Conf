@@ -12,7 +12,7 @@ final class OutputTests: XCTestCase {
             return
         }
 
-        let fooBinary = productsDirectory.appendingPathComponent("App")
+        let fooBinary = productsDirectory.appendingPathComponent("DemoApp")
 
         let process = Process()
         process.executableURL = fooBinary

@@ -1,9 +1,9 @@
 import XCTest
-@testable import Lib
+@testable import Conf
 
 final class FooTests: XCTestCase {
 
     func testFoo() throws {
-        XCTAssertEqual(42, foo())
+        
     }
 }
