@@ -38,7 +38,7 @@ public final class Config {
         data
     }
 
-    func loadConfiguration(from provider: ConfigurationProvider) throws {
+    public func load(from provider: ConfigurationProvider) throws {
         try data.merge(provider.configuration(),
                        uniquingKeysWith: { _, new in new })
     }

@@ -1,19 +1,15 @@
 import Foundation
 
 /// Namespace for the predefined parsers
-enum Parser { }
+enum Parser {
+    struct InvalidFormat: Error { let data: Data }
+}
 
 extension Parser {
     static let json: CommonConfigurationProvider.Parser = { data in
-        let object: Any
-        do {
-            object = try JSONSerialization.jsonObject(with: data, options: [])
-        } catch {
-            throw ConfigurationError.parse(error)
-        }
+        let object = try JSONSerialization.jsonObject(with: data, options: [])
         guard let values = object as? [String: Any] else {
-            struct InvalidJsonFormat: Error { let data: Data }
-            throw ConfigurationError.parse(InvalidJsonFormat(data: data))
+            throw InvalidFormat(data: data)
         }
         return values
     }
@@ -21,12 +17,49 @@ extension Parser {
 
 extension Parser {
     static let donEnv: CommonConfigurationProvider.Parser = { data in
-        func fail() throws {
-            struct InvalidDotEnvFormat: Error { let data: Data }
-            throw InvalidDotEnvFormat(data: data)
+        func fail() throws -> Never {
+            throw InvalidFormat(data: data)
         }
-        try fail()
-        let result = [String: String]()
+        guard let contents = String(data: data, encoding: .utf8) else { try fail() }
+        var result = [String: String]()
+        let lines  = contents.split(whereSeparator: { $0 == "\n" || $0 == "\r\n" }).lazy
+        for line in lines {
+            // ignore comments
+            if line.starts(with: "#") { continue }
+            // ignore lines that appear empty
+            if line.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                continue
+            }
+            // extract key and value which are separated by an equals sign
+            let parts = line.split(separator: "=", maxSplits: 1)
+            guard parts.count == 2 else { try fail() }
+            let key = parts[0].trimmingCharacters(in: .whitespacesAndNewlines)
+            var value = parts[1].trimmingCharacters(in: .whitespacesAndNewlines)
+           // remove surrounding quotes from value & convert remove escape character before any embedded quotes
+            if value[value.startIndex] == "\"" && value[value.index(before: value.endIndex)] == "\"" {
+                value.remove(at: value.startIndex)
+                value.remove(at: value.index(before: value.endIndex))
+                value = value.replacingOccurrences(of: "\\\"", with: "\"")
+            }
+            // remove surrounding single quotes from value & convert remove escape character before any embedded quotes
+            if value[value.startIndex] == "'" && value[value.index(before: value.endIndex)] == "'" {
+                value.remove(at: value.startIndex)
+                value.remove(at: value.index(before: value.endIndex))
+                value = value.replacingOccurrences(of: "'", with: "'")
+            }
+            result[key] = value
+        }
         return result
+
+    }
+}
+
+extension Parser {
+    static let plist: CommonConfigurationProvider.Parser = { data in
+        let object = try PropertyListSerialization.propertyList(from: data, format: nil)
+        guard let values = object as? [String: Any] else {
+            throw InvalidFormat(data: data)
+        }
+        return values
     }
 }

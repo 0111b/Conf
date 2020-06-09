@@ -17,14 +17,14 @@ final class ConfigTests: XCTestCase {
     func testLoadConfigThrow() {
         let errorConfigProvider = MockConfigurationProvider(config: [:], error: TestError())
 
-        XCTAssertThrowsError(try config.loadConfiguration(from: errorConfigProvider)) { error in
+        XCTAssertThrowsError(try config.load(from: errorConfigProvider)) { error in
             XCTAssertTrue(error is TestError)
         }
     }
 
     func testLoadConfigSuccess() throws {
         let loader = MockConfigurationProvider(config: ["key": "value"])
-        try config.loadConfiguration(from: loader)
+        try config.load(from: loader)
         XCTAssertEqual(config.dump(), [Key("key"): "value"])
     }
 
@@ -51,7 +51,7 @@ final class ConfigTests: XCTestCase {
             "int": "42",
             "double": "23.5"
         ])
-        try config.loadConfiguration(from: loader)
+        try config.load(from: loader)
         XCTAssertEqual(config["blabla"], nil)
         XCTAssertEqual(config["string"], "value")
         XCTAssertEqual(config["int"], "42")

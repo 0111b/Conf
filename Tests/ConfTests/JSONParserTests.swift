@@ -1,7 +1,7 @@
 import XCTest
 @testable import Conf
 
-final class ParserJSONTests: XCTestCase {
+final class JSONParserTests: XCTestCase {
     func testSuccess() throws {
         let content = try Resource(name: "valid", type: "json").data()
         _ = try Parser.json(content)
@@ -10,10 +10,7 @@ final class ParserJSONTests: XCTestCase {
     func testError() throws {
         let content = try Resource(name: "invalid", type: "json").data()
         XCTAssertThrowsError(try Parser.json(content)) { error in
-            guard case ConfigurationError.parse = error else {
-                XCTFail("Invalid error returned \(error)")
-                return
-            }
+            XCTAssertTrue(error is Parser.InvalidFormat)
         }
     }
 }

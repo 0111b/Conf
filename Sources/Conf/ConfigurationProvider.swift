@@ -1,6 +1,6 @@
 import Foundation
 
-protocol ConfigurationProvider {
+public protocol ConfigurationProvider {
     func configuration() throws -> [Key: String]
 }
 
