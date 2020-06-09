@@ -37,6 +37,12 @@ final class ConfigTests: XCTestCase {
         XCTAssertEqual(config.dump(), [:])
         config.set(value: "another value", for: ["long", "path"])
         XCTAssertEqual(config.dump(), [Key(["long", "path"]): "another value"])
+
+        config["subscript"] = "subscriptValue"
+        XCTAssertEqual(config.dump()["subscript"], "subscriptValue")
+
+        config["lossless"] = 42
+        XCTAssertEqual(config.dump()["lossless"], "42")
     }
 
     func testRead() throws {

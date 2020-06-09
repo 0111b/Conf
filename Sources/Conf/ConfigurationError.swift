@@ -1,5 +1,5 @@
 public enum ConfigurationError: Error {
     case fetch(Error)
     case parse(Error)
-    case `import`(path: Key, value: Any)
+    case decode(path: Key, value: Any)
 }

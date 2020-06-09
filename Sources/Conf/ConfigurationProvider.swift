@@ -45,7 +45,7 @@ final class CommonConfigurationProvider: ConfigurationProvider {
                 array.enumerated()
                     .map { ( currentKey.child(key: String($0)), $1.description) })
         default:
-            throw ConfigurationError.import(path: currentKey, value: object)
+            throw ConfigurationError.decode(path: currentKey, value: object)
         }
     }
 }
