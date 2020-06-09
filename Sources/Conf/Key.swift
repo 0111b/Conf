@@ -1,20 +1,23 @@
 /// Configuration key that points to the value
 public struct Key {
 
-    let fragmets: [String]
+    let path: [String]
 
     public init(_ value: LosslessStringConvertible) {
-        fragmets = [value.description]
+        path = [value.description]
     }
 
     public init(_ elements: [LosslessStringConvertible]) {
-        fragmets = elements.map(\.description)
+        path = elements.map(\.description)
     }
 
     public init(_ elements: LosslessStringConvertible...) {
         self.init(elements)
     }
 
+    func child(key: String) -> Key {
+        Key(path + [key])
+    }
 }
 
 extension Key: Equatable {}
@@ -40,6 +43,6 @@ extension Key: ExpressibleByIntegerLiteral {
 
 extension Key: CustomStringConvertible {
     public var description: String {
-        "Key<\(fragmets.description)>"
+        "Key<\(path.description)>"
     }
 }

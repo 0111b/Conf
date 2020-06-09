@@ -35,7 +35,7 @@ public struct Environment {
             return raw.flatMap(Value.init)
         }
         nonmutating set (value) {
-            self[key] = value?.description ?? nil
+            self[key] = value?.description
         }
     }
 
