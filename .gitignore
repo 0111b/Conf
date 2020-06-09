@@ -93,3 +93,6 @@ iOSInjectionProject/
 .DS_Store
 
 *.xcodeproj
+
+# Ignore Xcode settings generated for Package.swift
+.swiftpm/xcode
