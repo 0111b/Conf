@@ -2,15 +2,6 @@
     "version": "0.2.0",
     "configurations": [
         // Running executables
-        {
-            "type": "lldb",
-            "request": "launch",
-            "name": "Run",
-            "program": "${workspaceFolder}/.build/debug/App",
-            "args": [],
-            "cwd": "${workspaceFolder}",
-            "preLaunchTask": "swift-build"
-        },
         // Running unit tests
         {
             "type": "lldb",
