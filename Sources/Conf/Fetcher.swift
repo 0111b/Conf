@@ -4,7 +4,7 @@ import Foundation
 enum Fetcher { }
 
 extension Fetcher {
-    
+
     static let direct: (Data) -> CommonConfigurationProvider.Fetcher = { data in
        return { data }
     }
