@@ -6,20 +6,11 @@ import PackageDescription
 let package = Package(
     name: "Conf",
     products: [
-        .library(name: "Conf", targets: ["Conf"]),
-//        .executable(name: "Demo", targets: ["DemoApp"])
+        .library(name: "Conf", targets: ["Conf"])
     ],
     dependencies: [
     ],
     targets: [
-        .target(
-            name: "DemoApp",
-            dependencies: [
-                "Conf",
-            ]),
-        .testTarget(
-            name: "DemoAppTests",
-            dependencies: ["DemoApp"]),
         .target(
             name: "Conf",
             dependencies: [
