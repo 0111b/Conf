@@ -1,28 +1,46 @@
 import Foundation
 
-public extension Config {
-    func load(env filename: String) throws {
-        try load(from: DefaultConfigurationProvider(loader: Fetcher.file(filename), parser: Parser.donEnv))
+extension Config {
+
+    /// Loads values from the given source
+    /// - Parameters:
+    ///   - source: method of data acquiring
+    ///   - format: data format
+    /// - Throws: `ConfigurationError`
+    public func load(_ source: Source, format: Format = .dotEnv) throws {
+        try load(from: DefaultConfigurationProvider(loader: source.fetcher, parser: format.parser))
     }
 
-    func load(env data: Data) throws {
-        try load(from: DefaultConfigurationProvider(loader: Fetcher.direct(data), parser: Parser.donEnv))
+    /// External data source
+    public enum Source {
+        case data(Data)
+        case url(URL)
+        case file(name: String)
+        case string(String)
+
+        var fetcher: DefaultConfigurationProvider.Fetcher {
+            switch self {
+            case let .data(value): return Fetcher.direct(value)
+            case let .url(value): return Fetcher.url(value)
+            case let .file(value): return Fetcher.file(value)
+            case let .string(value): return Fetcher.string(value)
+            }
+        }
     }
 
-    func load(json filename: String) throws {
-        try load(from: DefaultConfigurationProvider(loader: Fetcher.file(filename), parser: Parser.json))
-    }
+    /// External data format
+    public enum Format {
+        case dotEnv
+        case json
+        case plist
 
-    func load(json data: Data) throws {
-        try load(from: DefaultConfigurationProvider(loader: Fetcher.direct(data), parser: Parser.json))
-    }
-
-    func load(plist filename: String) throws {
-        try load(from: DefaultConfigurationProvider(loader: Fetcher.file(filename), parser: Parser.plist))
-    }
-
-    func load(plist data: Data) throws {
-        try load(from: DefaultConfigurationProvider(loader: Fetcher.direct(data), parser: Parser.plist))
+        var parser: DefaultConfigurationProvider.Parser {
+            switch self {
+            case .dotEnv: return Parser.donEnv
+            case .json: return Parser.json
+            case .plist: return Parser.plist
+            }
+        }
     }
 
 }

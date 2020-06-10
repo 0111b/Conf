@@ -9,10 +9,22 @@ extension Fetcher {
        return { data }
     }
 
+    static let url: (URL) -> DefaultConfigurationProvider.Fetcher = { url in
+        return { try Data(contentsOf: url) }
+    }
+
     static let file: (String) -> DefaultConfigurationProvider.Fetcher = { configName in
+        return url(URL(fileURLWithPath: configName, isDirectory: false))
+    }
+
+    static let string: (String) -> DefaultConfigurationProvider.Fetcher = { string in
         return {
-            let url = URL(fileURLWithPath: configName, isDirectory: false)
-            return try Data(contentsOf: url)
+            guard let data = string.data(using: .utf8) else {
+                struct InvalidString: Error {}
+                throw InvalidString()
+            }
+            return data
         }
     }
+
 }
