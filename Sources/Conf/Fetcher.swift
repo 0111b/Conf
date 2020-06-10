@@ -12,7 +12,6 @@ extension Fetcher {
     static let file: (String) -> DefaultConfigurationProvider.Fetcher = { configName in
         return {
             let url = URL(fileURLWithPath: configName, isDirectory: false)
-            print(url)
             return try Data(contentsOf: url)
         }
     }

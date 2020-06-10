@@ -1,6 +1,11 @@
 import Foundation
-
+/// Configuration values provider
+///
+/// Incapsulates configuration values fetching from any source
 public protocol ConfigurationProvider {
+    /// Fetches configuration values
+    ///
+    /// Must throw `ConfigurationError` on error
     func configuration() throws -> [Key: String]
 }
 
