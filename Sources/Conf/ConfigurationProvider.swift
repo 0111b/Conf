@@ -4,7 +4,7 @@ public protocol ConfigurationProvider {
     func configuration() throws -> [Key: String]
 }
 
-final class CommonConfigurationProvider: ConfigurationProvider {
+final class DefaultConfigurationProvider: ConfigurationProvider {
     typealias Fetcher = () throws -> Data
     typealias Parser = (Data) throws -> [String: Any]
 

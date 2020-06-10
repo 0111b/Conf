@@ -5,11 +5,11 @@ enum Fetcher { }
 
 extension Fetcher {
 
-    static let direct: (Data) -> CommonConfigurationProvider.Fetcher = { data in
+    static let direct: (Data) -> DefaultConfigurationProvider.Fetcher = { data in
        return { data }
     }
 
-    static let file: (String) -> CommonConfigurationProvider.Fetcher = { configName in
+    static let file: (String) -> DefaultConfigurationProvider.Fetcher = { configName in
         return {
             let url = URL(fileURLWithPath: configName, isDirectory: false)
             print(url)

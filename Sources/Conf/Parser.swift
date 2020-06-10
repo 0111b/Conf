@@ -6,7 +6,7 @@ enum Parser {
 }
 
 extension Parser {
-    static let json: CommonConfigurationProvider.Parser = { data in
+    static let json: DefaultConfigurationProvider.Parser = { data in
         let object = try JSONSerialization.jsonObject(with: data, options: [])
         guard let values = object as? [String: Any] else {
             throw InvalidFormat(data: data)
@@ -16,7 +16,7 @@ extension Parser {
 }
 
 extension Parser {
-    static let donEnv: CommonConfigurationProvider.Parser = { data in
+    static let donEnv: DefaultConfigurationProvider.Parser = { data in
         func fail() throws -> Never {
             throw InvalidFormat(data: data)
         }
@@ -55,7 +55,7 @@ extension Parser {
 }
 
 extension Parser {
-    static let plist: CommonConfigurationProvider.Parser = { data in
+    static let plist: DefaultConfigurationProvider.Parser = { data in
         let object = try PropertyListSerialization.propertyList(from: data, format: nil)
         guard let values = object as? [String: Any] else {
             throw InvalidFormat(data: data)

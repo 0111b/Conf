@@ -3,9 +3,9 @@ import XCTest
 
 final class CommonConfigurationProviderTests: XCTestCase {
     func testFetchError() {
-        let fetcher: CommonConfigurationProvider.Fetcher = { throw TestError() }
-        let parser: CommonConfigurationProvider.Parser = { _ in [:] }
-        let provider = CommonConfigurationProvider(loader: fetcher, parser: parser)
+        let fetcher: DefaultConfigurationProvider.Fetcher = { throw TestError() }
+        let parser: DefaultConfigurationProvider.Parser = { _ in [:] }
+        let provider = DefaultConfigurationProvider(loader: fetcher, parser: parser)
 
         XCTAssertThrowsError(try provider.configuration()) { error in
             if case let ConfigurationError.fetch(detailError) = error {
@@ -17,9 +17,9 @@ final class CommonConfigurationProviderTests: XCTestCase {
     }
 
     func testParserError() {
-        let fetcher: CommonConfigurationProvider.Fetcher = { Data() }
-        let parser: CommonConfigurationProvider.Parser = { _ in throw  TestError() }
-        let provider = CommonConfigurationProvider(loader: fetcher, parser: parser)
+        let fetcher: DefaultConfigurationProvider.Fetcher = { Data() }
+        let parser: DefaultConfigurationProvider.Parser = { _ in throw  TestError() }
+        let provider = DefaultConfigurationProvider(loader: fetcher, parser: parser)
 
         XCTAssertThrowsError(try provider.configuration()) { error in
             if case let ConfigurationError.parse(detailError) = error {
@@ -31,15 +31,15 @@ final class CommonConfigurationProviderTests: XCTestCase {
     }
 
     func testDecodeError() {
-        let fetcher: CommonConfigurationProvider.Fetcher = { Data() }
+        let fetcher: DefaultConfigurationProvider.Fetcher = { Data() }
         let uuid = UUID()
-        let parser: CommonConfigurationProvider.Parser = { data in
+        let parser: DefaultConfigurationProvider.Parser = { data in
             return [
                 "first": "value",
                 "second": uuid
             ]
         }
-        let provider = CommonConfigurationProvider(loader: fetcher, parser: parser)
+        let provider = DefaultConfigurationProvider(loader: fetcher, parser: parser)
 
         XCTAssertThrowsError(try provider.configuration()) { error in
             if case let ConfigurationError.decode(path: key, value: value) = error {
@@ -53,32 +53,32 @@ final class CommonConfigurationProviderTests: XCTestCase {
 
     func testDataFlow() throws {
         let data = "string".data(using: .utf8)!
-        let fetcher: CommonConfigurationProvider.Fetcher = { data }
-        let parser: CommonConfigurationProvider.Parser = { parserInput in
+        let fetcher: DefaultConfigurationProvider.Fetcher = { data }
+        let parser: DefaultConfigurationProvider.Parser = { parserInput in
             XCTAssertEqual(parserInput, data)
             return [:]
         }
-        let provider = CommonConfigurationProvider(loader: fetcher, parser: parser)
+        let provider = DefaultConfigurationProvider(loader: fetcher, parser: parser)
         let configuration = try provider.configuration()
         XCTAssertTrue(configuration.isEmpty)
     }
 
     func testDecodeValues() throws {
-        let fetcher: CommonConfigurationProvider.Fetcher = { Data() }
-        let parser: CommonConfigurationProvider.Parser = { _ in
+        let fetcher: DefaultConfigurationProvider.Fetcher = { Data() }
+        let parser: DefaultConfigurationProvider.Parser = { _ in
             return [ "key": 22]
         }
-        let provider = CommonConfigurationProvider(loader: fetcher, parser: parser)
+        let provider = DefaultConfigurationProvider(loader: fetcher, parser: parser)
         let configuration = try provider.configuration()
         XCTAssertEqual(configuration, ["key": "22"])
     }
 
     func testDecodeArray() throws {
-        let fetcher: CommonConfigurationProvider.Fetcher = { Data() }
-        let parser: CommonConfigurationProvider.Parser = { _ in
+        let fetcher: DefaultConfigurationProvider.Fetcher = { Data() }
+        let parser: DefaultConfigurationProvider.Parser = { _ in
             return [ "key": ["one", "two"]]
         }
-        let provider = CommonConfigurationProvider(loader: fetcher, parser: parser)
+        let provider = DefaultConfigurationProvider(loader: fetcher, parser: parser)
         let configuration = try provider.configuration()
         let expect: [Key: String] = [
             Key(["key", "0"]): "one",
@@ -88,8 +88,8 @@ final class CommonConfigurationProviderTests: XCTestCase {
     }
 
     func testDecodeNestedValues() throws {
-        let fetcher: CommonConfigurationProvider.Fetcher = { Data() }
-        let parser: CommonConfigurationProvider.Parser = { _ in
+        let fetcher: DefaultConfigurationProvider.Fetcher = { Data() }
+        let parser: DefaultConfigurationProvider.Parser = { _ in
             return [
                 "key": [ "nested": "value" ],
                 "one": [ "more": [
@@ -98,7 +98,7 @@ final class CommonConfigurationProviderTests: XCTestCase {
                 ]
             ]
         }
-        let provider = CommonConfigurationProvider(loader: fetcher, parser: parser)
+        let provider = DefaultConfigurationProvider(loader: fetcher, parser: parser)
         let configuration = try provider.configuration()
         let expect: [Key: String] = [
             Key(["key", "nested"]): "value",
@@ -108,17 +108,17 @@ final class CommonConfigurationProviderTests: XCTestCase {
     }
 
     func testDecodeEmptyValues() throws {
-        let fetcher: CommonConfigurationProvider.Fetcher = { Data() }
-        let parser: CommonConfigurationProvider.Parser = { _ in [:] }
-        let provider = CommonConfigurationProvider(loader: fetcher, parser: parser)
+        let fetcher: DefaultConfigurationProvider.Fetcher = { Data() }
+        let parser: DefaultConfigurationProvider.Parser = { _ in [:] }
+        let provider = DefaultConfigurationProvider(loader: fetcher, parser: parser)
         let configuration = try provider.configuration()
         XCTAssertEqual(configuration, [:])
     }
 
     func testDecodeEmptyArray() throws {
-        let fetcher: CommonConfigurationProvider.Fetcher = { Data() }
-        let parser: CommonConfigurationProvider.Parser = { _ in [ "key": []] }
-        let provider = CommonConfigurationProvider(loader: fetcher, parser: parser)
+        let fetcher: DefaultConfigurationProvider.Fetcher = { Data() }
+        let parser: DefaultConfigurationProvider.Parser = { _ in [ "key": []] }
+        let provider = DefaultConfigurationProvider(loader: fetcher, parser: parser)
         let configuration = try provider.configuration()
         XCTAssertEqual(configuration, [:])
     }
