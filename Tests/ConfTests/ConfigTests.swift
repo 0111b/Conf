@@ -9,7 +9,7 @@ final class ConfigTests: XCTestCase {
         config = Config()
     }
 
-    func testEnvironmentuse() {
+    func testEnvironmentUse() {
         XCTAssertNil(Config(useEnvironment: false)["PATH"])
         XCTAssertNotNil(Config(useEnvironment: true)["PATH"])
     }
@@ -58,6 +58,28 @@ final class ConfigTests: XCTestCase {
         XCTAssertEqual(config["int"], 42)
         XCTAssertEqual(config["double"], "23.5")
         XCTAssertEqual(config["double"], 23.5)
+    }
+
+    func testRequire() throws {
+        XCTAssertThrowsError(try config.require("missingString")) { error in
+            if case let ConfigurationError.missing(key: key) = error {
+                XCTAssertEqual(key, "missingString")
+            } else {
+                XCTFail("Invalid error type \(error)")
+            }
+        }
+
+        XCTAssertThrowsError(try config.require("missingLossless") as Int?) { error in
+            if case let ConfigurationError.missing(key: key) = error {
+                XCTAssertEqual(key, "missingLossless")
+            } else {
+                XCTFail("Invalid error type \(error)")
+            }
+        }
+
+        config["intKey"] = 42
+        try  XCTAssertEqual("42", config.require("intKey"))
+        try  XCTAssertEqual(42, config.require("intKey"))
     }
 
 }
