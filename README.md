@@ -33,7 +33,15 @@ try config.load(.string(json), format: .json)
 
 ### Data representation
 All values are stored as `Key`-`String` pairs. There are convenience methods to use `LosslessStringConvertible`. 
-The `Key`  represents the value position in the provided source. For basic key-value formats it is just a string. For nested types it is the array of strings. Arrays values are mapped as multiple values:
+
+The `Key`  represents the value position in the provided source. 
+
+For basic key-value formats it is just a string. 
+
+For nested types key is the array of strings. 
+
+Arrays are mapped as multiple key-value pairs:
+
 ```
 Key<arrayName, 0> = <first element>
 Key<arrayName, 1> = <second element>
@@ -62,7 +70,6 @@ let value = config[["array", 2]]
 For required values you can use `require` method which throws `ConfigurationError.missing(key:)` if value is not found.
 
 ```swift
-
 let requiredValue = try config.require("secret")
 
 struct MyCredentials {
@@ -78,7 +85,9 @@ extension Config {
 }
 ```
 ### Updating values
+
 Values can be updated via subscript
+
 ```swift
 config["foo"] = "bar"
 config["answer"] = 42
@@ -129,7 +138,7 @@ It is also possbile to provide completelly custom implementation of the data fet
 ```swift
 struct CustomConfigurationProvider: ConfigurationProvider {
     func configuration() throws -> [Key : String] {
-        return ["key": "value]
+        return ["key": "value"]
     }
 }
 config.load(from: CustomConfigurationProvider())
@@ -137,5 +146,5 @@ config.load(from: CustomConfigurationProvider())
 
 # TODO
 
-[-] Cocoapods support
-[-] Carthage support
+- [ ] Cocoapods support
+- [ ] Carthage support
