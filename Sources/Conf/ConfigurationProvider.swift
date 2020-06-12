@@ -10,8 +10,8 @@ public protocol ConfigurationProvider {
 }
 
 final class DefaultConfigurationProvider: ConfigurationProvider {
-    typealias Fetcher = () throws -> Data
-    typealias Parser = (Data) throws -> [String: Any]
+    typealias Fetcher = FetcherType
+    typealias Parser = ParserType
 
     init(loader: @escaping Fetcher, parser: @escaping Parser) {
         self.load = loader

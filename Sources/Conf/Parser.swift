@@ -1,12 +1,14 @@
 import Foundation
 
+public typealias ParserType = (Data) throws -> [String: Any]
+
 /// Namespace for the predefined parsers
 enum Parser {
     struct InvalidFormat: Error { let data: Data }
 }
 
 extension Parser {
-    static let json: DefaultConfigurationProvider.Parser = { data in
+    static let json: ParserType = { data in
         let object = try JSONSerialization.jsonObject(with: data, options: [])
         guard let values = object as? [String: Any] else {
             throw InvalidFormat(data: data)
@@ -16,7 +18,7 @@ extension Parser {
 }
 
 extension Parser {
-    static let donEnv: DefaultConfigurationProvider.Parser = { data in
+    static let donEnv: ParserType = { data in
         func fail() throws -> Never {
             throw InvalidFormat(data: data)
         }
@@ -55,7 +57,7 @@ extension Parser {
 }
 
 extension Parser {
-    static let plist: DefaultConfigurationProvider.Parser = { data in
+    static let plist: ParserType = { data in
         let object = try PropertyListSerialization.propertyList(from: data, format: nil)
         guard let values = object as? [String: Any] else {
             throw InvalidFormat(data: data)

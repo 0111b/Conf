@@ -18,7 +18,7 @@ extension Config {
         case file(name: String)
         case string(String)
 
-        var fetcher: DefaultConfigurationProvider.Fetcher {
+        var fetcher: FetcherType {
             switch self {
             case let .data(value): return Fetcher.direct(value)
             case let .url(value): return Fetcher.url(value)
@@ -33,12 +33,14 @@ extension Config {
         case dotEnv
         case json
         case plist
+        case custom(ParserType)
 
-        var parser: DefaultConfigurationProvider.Parser {
+        var parser: ParserType {
             switch self {
             case .dotEnv: return Parser.donEnv
             case .json: return Parser.json
             case .plist: return Parser.plist
+            case .custom(let parser): return parser
             }
         }
     }
