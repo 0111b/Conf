@@ -18,5 +18,6 @@ let package = Package(
         .testTarget(
             name: "ConfTests",
             dependencies: ["Conf"]),
-    ]
+    ],
+    swiftLanguageVersions: [.v5]
 )
