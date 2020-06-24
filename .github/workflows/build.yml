@@ -29,7 +29,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: swift -version
-      - run: swift test --enable-code-coverage
+      - run: swift package clean        
+      - run: swift test -v -enable-code-coverage
 
   Linux:
     strategy:
@@ -40,5 +41,6 @@ jobs:
       image: swift:${{ matrix.tag }}
     steps:
       - uses: actions/checkout@v2
-      - run: swift test --enable-test-discovery --enable-code-coverage
+      - run: swift package clean                
+      - run: swift test -v --enable-test-discovery --enable-code-coverage
       - uses: mattpolzin/swift-codecov-action@0.4.0
