@@ -1,5 +1,6 @@
 import Foundation
 
+/// Raw data acquiring type
 public typealias FetcherType = () throws -> Data
 
 /// Namespace for the predefined fetchers

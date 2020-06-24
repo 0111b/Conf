@@ -1,5 +1,6 @@
 import Foundation
 
+/// Raw data parser type
 public typealias ParserType = (Data) throws -> [String: Any]
 
 /// Namespace for the predefined parsers
