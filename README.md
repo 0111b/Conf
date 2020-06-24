@@ -1,23 +1,40 @@
 # Conf
-[![Build Status](http://ci.merlin.local/api/badges/adan/Conf/status.svg)](http://ci.merlin.local/adan/Conf)
-[![Swift 5](https://img.shields.io/badge/Swift-5-orange.svg?style=flat)](https://developer.apple.com/swift/)
 
 Config made easy
 
-## Summary
+[!Build](https://github.com/0111b/Conf/workflows/.github/workflows/main.yml/badge.svg?branch=master)
+[![Build Status](http://ci.merlin.local/api/badges/adan/Conf/status.svg)](http://ci.merlin.local/adan/Conf)
+[![Swift 5](https://img.shields.io/badge/Swift-5-orange.svg?style=flat)](https://developer.apple.com/swift/)
 
 This package provide easy way to work with configs. Mostly usefull in CLI-tools. Extentable and customisable.
 
-## Typical usecases
+## Contents ##
+
+* [Usage](#usage)
+    * [Creating the config](#creating-the-config)
+    * [Load configurations](#load-configurations)
+    * [Data representation](#data-representation)
+    * [Reading the value](#reading-the-value)
+    * [Require the value](#require-the-value)
+    * [Updating values](#updating-values)
+    * [Creating the keys](#creating-the-keys)
+    * [Working with process environment](#working-with-process-environment)
+* [Customisation](#customisation)
+    * [Adding data format](#adding-data-format)
+    * [Custom parsing](#custom-parsing)
+* [TODO](#todo)
+
+## Usage ##
 
 For more details please refer the tests
 
-### Creating the config
+### Creating the config ###
+
 ```swift
 let config = Config(useEnvironment: true)
 ```
 
-### Load configurations
+### Load configurations ###
 
 ```swift
 try config.load(.file(name: ".env.dev"))
@@ -31,14 +48,15 @@ let json = """
 try config.load(.string(json), format: .json)
 ```
 
-### Data representation
-All values are stored as `Key`-`String` pairs. There are convenience methods to use `LosslessStringConvertible`. 
+### Data representation ###
 
-The `Key`  represents the value position in the provided source. 
+All values are stored as `Key`-`String` pairs. There are convenience methods to use `LosslessStringConvertible`.
 
-For basic key-value formats it is just a string. 
+The `Key`  represents the value position in the provided source.
 
-For nested types key is the array of strings. 
+For basic key-value formats it is just a string.
+
+For nested types key is the array of strings.
 
 Arrays are mapped as multiple key-value pairs:
 
@@ -49,7 +67,8 @@ Key<arrayName, 1> = <second element>
 Key<arrayName, count-1> = <last element>
 ```
 
-### Reading the value
+### Reading the value ###
+
 Values can be accessed via subscripts
 
 ```swift
@@ -63,9 +82,15 @@ let value = config[key]
 let value = config[["key", "nested"]]
 
 let value = config[["array", 2]]
+
+extension Key {
+    static let clientId = Key("SECRET_CLIENT_ID")
+}
+
+let value = config[.clientId]
 ```
 
-### Require the value
+### Require the value ###
 
 For required values you can use `require` method which throws `ConfigurationError.missing(key:)` if value is not found.
 
@@ -84,7 +109,8 @@ extension Config {
     }
 }
 ```
-### Updating values
+
+### Updating values ###
 
 Values can be updated via subscript
 
@@ -93,19 +119,23 @@ config["foo"] = "bar"
 config["answer"] = 42
 ```
 
-### Creating the keys
+### Creating the keys ###
+
 ```swift
-let key: Key = "24"
+let key: Key = "myKey"
 let key: Key = 99
-let key4: Key = Key(23.4)
-let key5: Key = Key("some")
-let key6: Key = ["24", 72, 23.4, true]
-let key7: Key = Key([1, 2, 3])
+let key: Key = Key(23.4)
+let key: Key = Key("some")
+let key: Key = ["24", 72, 23.4, true]
+let key: Key = Key([1, 2, 3])
 ```
 
+### Working with process environment ###
 
-### Working with process environment
+`Conf` can fallback to the environment variables. This is controlled by `useEnvironment` variable in the constructor.
+
 Env values can be assessed separately with `Environment`
+
 ```swift
 let env = Environment()
 let home = env["HOME"]
@@ -113,9 +143,11 @@ let path = env.PATH
 env.TMPDIR = "/tmp"
 ```
 
-# Customisation
+## Customisation ##
 
-If you want to add support for different config format  you just need to implement your own parser function and call `load` with `Format.custom`. 
+### Adding data format ###
+
+If you want to add support for different config format  you just need to implement your own parser function and call `load` with `Format.custom`.
 
 For example here is how `yaml` support can be added with [Yams](https://github.com/jpsim/Yams)
 
@@ -133,6 +165,8 @@ let yamlParser: ParserType = { data in
 try config.load(.file(name: "config.yml"), format: .custom(yamlParser))
 ```
 
+### Custom parsing ###
+
 It is also possbile to provide completelly custom implementation of the data fetching behaviour. To do this you need to adopt `ConfigurationProvider`
 
 ```swift
@@ -144,7 +178,8 @@ struct CustomConfigurationProvider: ConfigurationProvider {
 config.load(from: CustomConfigurationProvider())
 ```
 
-# TODO
+## TODO ##
 
 - [ ] Cocoapods support
 - [ ] Carthage support
+- [x] Github mirror
