@@ -2,7 +2,7 @@
 
 Config made easy
 
-[!Build](https://github.com/0111b/Conf/workflows/.github/workflows/main.yml/badge.svg?branch=master)
+[![Build status](https://github.com/0111b/Conf/workflows/.github/workflows/main.yml/badge.svg?branch=master)](https://github.com/0111b/Conf)
 [![Build Status](http://ci.merlin.local/api/badges/adan/Conf/status.svg)](http://ci.merlin.local/adan/Conf)
 [![Swift 5](https://img.shields.io/badge/Swift-5-orange.svg?style=flat)](https://developer.apple.com/swift/)
 
