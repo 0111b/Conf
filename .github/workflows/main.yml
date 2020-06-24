@@ -3,11 +3,11 @@ name: CI
 
 on:
   push:
-    branches: 
+    branches:
       - master
       - develop
   pull_request:
-    branches: 
+    branches:
       - master
 
 jobs:
@@ -19,9 +19,7 @@ jobs:
         uses: norio-nomura/action-swiftlint@3.1.0
         with:
           args: --strict
-
-
- Xcode:
+  Xcode:
     strategy:
       matrix:
         xcode_version: ['11.3', '11.4']
@@ -32,8 +30,8 @@ jobs:
       - uses: actions/checkout@v2
       - run: swift -version
       - run: swift test --enable-code-coverage
-        
-Linux:
+
+  Linux:
     strategy:
       matrix:
         tag: ['5.1', '5.2']
