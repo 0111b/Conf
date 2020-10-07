@@ -8,7 +8,7 @@ public struct Key {
     }
 
     public init(_ elements: [LosslessStringConvertible]) {
-        path = elements.map(\.description)
+        path = elements.map { $0.description }
     }
 
     public init(_ elements: LosslessStringConvertible...) {
