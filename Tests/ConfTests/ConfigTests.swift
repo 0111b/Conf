@@ -69,7 +69,7 @@ final class ConfigTests: XCTestCase {
             }
         }
 
-        XCTAssertThrowsError(try config.require("missingLossless") as Int?) { error in
+        XCTAssertThrowsError(try config.require("missingLossless") as Int) { error in
             if case let ConfigurationError.missing(key: key) = error {
                 XCTAssertEqual(key, "missingLossless")
             } else {
