@@ -3,8 +3,8 @@
 Config made easy
 
 ![CI](https://github.com/0111b/Conf/workflows/CI/badge.svg)
-[![Build Status](http://ci.merlin.local/api/badges/adan/Conf/status.svg)](http://ci.merlin.local/adan/Conf)
-[![Swift 5](https://img.shields.io/badge/Swift-5-orange.svg?style=flat)](https://developer.apple.com/swift/)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2F0111b%2FConf%2Fbadge%3Ftype%3Dswift-versions)](https://swiftpackageindex.com/0111b/Conf)
+[![](https://img.shields.io/endpoint?url=https%3A%2F%2Fswiftpackageindex.com%2Fapi%2Fpackages%2F0111b%2FConf%2Fbadge%3Ftype%3Dplatforms)](https://swiftpackageindex.com/0111b/Conf)
 
 This package provide easy way to work with configs. Mostly usefull in CLI-tools. Extentable and customisable.
 
