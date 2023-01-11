@@ -37,7 +37,7 @@ local codecov = swift('codecov', [
 
 local lint = {
     name: 'lint',
-    image: 'norionomura/swiftlint:0.39.2',
+    image: 'norionomura/swiftlint:swift-5',
     commands: [
         'scripts/lint.sh',
     ],
