@@ -12,17 +12,17 @@ This package provide easy way to work with configs. Mostly usefull in CLI-tools.
 ## Contents ##
 
 * [Usage](#usage)
-    * [Creating the config](#creating-the-config)
-    * [Load configurations](#load-configurations)
-    * [Data representation](#data-representation)
-    * [Reading the value](#reading-the-value)
-    * [Require the value](#require-the-value)
-    * [Updating values](#updating-values)
-    * [Creating the keys](#creating-the-keys)
-    * [Working with process environment](#working-with-process-environment)
+  * [Creating the config](#creating-the-config)
+  * [Load configurations](#load-configurations)
+  * [Data representation](#data-representation)
+  * [Reading the value](#reading-the-value)
+  * [Require the value](#require-the-value)
+  * [Updating values](#updating-values)
+  * [Creating the keys](#creating-the-keys)
+  * [Working with process environment](#working-with-process-environment)
 * [Customisation](#customisation)
-    * [Adding data format](#adding-data-format)
-    * [Custom parsing](#custom-parsing)
+  * [Adding data format](#adding-data-format)
+  * [Custom parsing](#custom-parsing)
 * [TODO](#todo)
 
 ## Usage ##
@@ -181,6 +181,6 @@ config.load(from: CustomConfigurationProvider())
 
 ## TODO ##
 
-- [ ] Cocoapods support
-- [ ] Carthage support
-- [x] Github mirror
+* [ ] ~~Cocoapods support~~
+* [ ] ~~Carthage support~~
+* [x] Github mirror

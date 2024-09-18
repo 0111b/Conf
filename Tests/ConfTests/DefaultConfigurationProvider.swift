@@ -117,7 +117,7 @@ final class CommonConfigurationProviderTests: XCTestCase {
 
     func testDecodeEmptyArray() throws {
         let fetcher: DefaultConfigurationProvider.Fetcher = { Data() }
-        let parser: DefaultConfigurationProvider.Parser = { _ in [ "key": []] }
+        let parser: DefaultConfigurationProvider.Parser = { _ in [ "key": Array<Sendable>()] }
         let provider = DefaultConfigurationProvider(loader: fetcher, parser: parser)
         let configuration = try provider.configuration()
         XCTAssertEqual(configuration, [:])

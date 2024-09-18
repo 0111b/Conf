@@ -3,7 +3,8 @@ import XCTest
 
 final class FileFetcherTests: XCTestCase {
     func testSuccess() throws {
-        let load = Fetcher.file("Tests/Resources/valid.env")
+        let path = Resource.resourceFolderURL.appendingPathComponent("valid.env").path()
+        let load = Fetcher.file(path)
         _ = try load()
     }
 

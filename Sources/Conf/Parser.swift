@@ -1,7 +1,7 @@
 import Foundation
 
 /// Raw data parser type
-public typealias ParserType = (Data) throws -> [String: Any]
+public typealias ParserType = @Sendable (Data) throws -> [String: Sendable]
 
 /// Namespace for the predefined parsers
 enum Parser {
@@ -11,7 +11,7 @@ enum Parser {
 extension Parser {
     static let json: ParserType = { data in
         let object = try JSONSerialization.jsonObject(with: data, options: [])
-        guard let values = object as? [String: Any] else {
+        guard let values = object as? [String: Sendable] else {
             throw InvalidFormat(data: data)
         }
         return values
@@ -60,7 +60,7 @@ extension Parser {
 extension Parser {
     static let plist: ParserType = { data in
         let object = try PropertyListSerialization.propertyList(from: data, format: nil)
-        guard let values = object as? [String: Any] else {
+        guard let values = object as? [String: Sendable] else {
             throw InvalidFormat(data: data)
         }
         return values

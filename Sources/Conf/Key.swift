@@ -1,5 +1,5 @@
 /// Configuration key that points to the value
-public struct Key {
+public struct Key: Sendable {
 
     let path: [String]
 
