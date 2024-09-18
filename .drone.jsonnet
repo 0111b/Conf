@@ -9,7 +9,7 @@ local notify = {
 
 local swift(name, commands) = {
     name: name,
-    image: 'swift:5.6.3-slim',
+    image: 'swift:6.0.0-slim',
     commands: commands,
 };
 
