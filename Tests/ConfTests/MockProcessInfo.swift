@@ -1,7 +1,7 @@
 import Foundation
 
 #if os(macOS)
-class MockProcessInfo: ProcessInfo {
+class MockProcessInfo: ProcessInfo, @unchecked Sendable {
     init(_ env: [String: String]) { self.env = env }
     var env: [String: String]
     override var environment: [String: String] { env }

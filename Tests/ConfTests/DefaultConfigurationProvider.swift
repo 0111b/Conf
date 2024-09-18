@@ -33,7 +33,7 @@ final class CommonConfigurationProviderTests: XCTestCase {
     func testDecodeError() {
         let fetcher: DefaultConfigurationProvider.Fetcher = { Data() }
         let uuid = UUID()
-        let parser: DefaultConfigurationProvider.Parser = { data in
+        let parser: DefaultConfigurationProvider.Parser = { _ in
             return [
                 "first": "value",
                 "second": uuid
@@ -52,7 +52,7 @@ final class CommonConfigurationProviderTests: XCTestCase {
     }
 
     func testDataFlow() throws {
-        let data = "string".data(using: .utf8)!
+        let data = Data("string".utf8)
         let fetcher: DefaultConfigurationProvider.Fetcher = { data }
         let parser: DefaultConfigurationProvider.Parser = { parserInput in
             XCTAssertEqual(parserInput, data)
@@ -117,7 +117,7 @@ final class CommonConfigurationProviderTests: XCTestCase {
 
     func testDecodeEmptyArray() throws {
         let fetcher: DefaultConfigurationProvider.Fetcher = { Data() }
-        let parser: DefaultConfigurationProvider.Parser = { _ in [ "key": []] }
+        let parser: DefaultConfigurationProvider.Parser = { _ in [ "key": [Sendable]()] }
         let provider = DefaultConfigurationProvider(loader: fetcher, parser: parser)
         let configuration = try provider.configuration()
         XCTAssertEqual(configuration, [:])

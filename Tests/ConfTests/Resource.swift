@@ -33,5 +33,5 @@ extension Resource {
         .standardized
     static let testsFolderURL = sourceFileURL.deletingLastPathComponent()
     private static let resourceFolder = "Resources"
-    private static let sourceFileURL = URL(fileURLWithPath: #file, isDirectory: false)
+    private static let sourceFileURL = URL(fileURLWithPath: #filePath, isDirectory: false)
 }

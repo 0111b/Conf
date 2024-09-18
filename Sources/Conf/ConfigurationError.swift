@@ -5,7 +5,7 @@ public enum ConfigurationError: Error {
     /// Error during parsing raw data to the specified fortmat
     case parse(Error)
     /// Error during transforming data to the internal format
-    case decode(path: Key, value: Any)
+    case decode(path: Key, value: Sendable)
     /// Missing key requested
     case missing(key: Key)
 }

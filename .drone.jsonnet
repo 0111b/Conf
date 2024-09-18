@@ -9,7 +9,7 @@ local notify = {
 
 local swift(name, commands) = {
     name: name,
-    image: 'swift:5.2.3',
+    image: 'swift:6.0.0-slim',
     commands: commands,
 };
 
@@ -37,7 +37,7 @@ local codecov = swift('codecov', [
 
 local lint = {
     name: 'lint',
-    image: 'norionomura/swiftlint:0.39.2',
+    image: 'norionomura/swiftlint:swift-5',
     commands: [
         'scripts/lint.sh',
     ],
